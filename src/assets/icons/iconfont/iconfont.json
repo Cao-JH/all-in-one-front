@@ -1,0 +1,37 @@
+{
+  "id": "5134971",
+  "name": "all",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "577343",
+      "name": "card",
+      "font_class": "card",
+      "unicode": "e73f",
+      "unicode_decimal": 59199
+    },
+    {
+      "icon_id": "36209394",
+      "name": "video",
+      "font_class": "video",
+      "unicode": "e888",
+      "unicode_decimal": 59528
+    },
+    {
+      "icon_id": "44062867",
+      "name": "book",
+      "font_class": "book",
+      "unicode": "e993",
+      "unicode_decimal": 59795
+    },
+    {
+      "icon_id": "15838501",
+      "name": "menu",
+      "font_class": "menu",
+      "unicode": "e677",
+      "unicode_decimal": 58999
+    }
+  ]
+}

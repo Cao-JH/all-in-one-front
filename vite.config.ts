@@ -10,14 +10,13 @@ export default defineConfig({
   plugins: [
     vue(),
     vueDevTools(),
-    // 自动导入配置
     AutoImport({
-      imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'], // 自动导入这些库的API
-      dts: true, // 生成类型声明文件，适配TS
+      imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],
+      dts: true,
     }),
-    // 自动导入组件配置
     Components({
-      dirs: ['src/components'], // 自动导入src/components下的组件
+      dirs: ['src/components'],
+      deep: true,
       dts: true,
     }),
   ],

@@ -1,26 +1,34 @@
-import { globalIgnores } from 'eslint/config'
-import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript'
+import { defineConfigWithVueTs } from '@vue/eslint-config-typescript'
 import pluginVue from 'eslint-plugin-vue'
+import { globalIgnores } from 'eslint/config'
 import pluginOxlint from 'eslint-plugin-oxlint'
-import skipFormatting from 'eslint-config-prettier/flat'
-
-// To allow more languages other than `ts` in `.vue` files, uncomment the following lines:
-// import { configureVueProject } from '@vue/eslint-config-typescript'
-// configureVueProject({ scriptLangs: ['ts', 'tsx'] })
-// More info at https://github.com/vuejs/eslint-config-typescript/#advanced-setup
+import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
 
 export default defineConfigWithVueTs(
   {
-    name: 'app/files-to-lint',
-    files: ['**/*.{vue,ts,mts,tsx}'],
+    name: 'app/files',
+    files: ['**/*.{ts,mts,tsx,vue}'],
   },
 
-  globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
+  globalIgnores([
+    '**/dist/**',
+    '**/coverage/**',
+    '**/node_modules/**'
+  ]),
 
-  ...pluginVue.configs['flat/essential'],
-  vueTsConfigs.recommended,
+  
+  ...pluginVue.configs['flat/essential'], // Vue 基础规则
 
-  ...pluginOxlint.buildFromOxlintConfigFile('.oxlintrc.json'),
+  ...pluginOxlint.buildFromOxlintConfigFile('.oxlintrc.json'), // Oxlint (超快)
 
-  skipFormatting,
+  // 自定义规则
+  {
+    rules: {
+      'vue/multi-word-component-names': 'off', // 允许 index.vue
+      'vue/script-setup-uses-vars': 'error', // script setup 不需要 import Vue
+      'no-console': 'off', // console 允许
+    }
+  },
+  
+  skipFormatting, // 避免和 prettier 冲突
 )
