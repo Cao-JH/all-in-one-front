@@ -1,7 +1,4 @@
-// ============================
-// 全局 SCSS 变量 + 混合器
-// 适配白天/夜间模式，对应 Tailwind 配置
-// ============================
+@use "sass:map";
 
 // 1. 基础变量（复用核心值）
 $font-family-sans: 'Inter', '阿里巴巴普惠体', system-ui, sans-serif;
@@ -15,12 +12,14 @@ $spacing-nav: 24px;
 
 // 2. 白天模式配色
 $day-colors: (
-  bg: #FAFAFC,
-  card: #FFFFFF,
+  bg: #FFFFFF,
+  card: #FAFAFC,
   text: #1F2937,
   text-secondary: #6B7280,
   text-tertiary: #9CA3AF,
-  border: #E5E7EB
+  border: #E5E7EB,
+  card-reverse: #000000,
+  text-reverse: #FFFFFF,
 );
 
 // 3. 夜间模式配色
@@ -30,7 +29,9 @@ $night-colors: (
   text: #F9FAFB,
   text-secondary: #9CA3AF,
   text-tertiary: #6B7280,
-  border: #374151
+  border: #374151,
+  card-reverse: #FAFAFC,
+  text-reverse: #1F2937,
 );
 
 // 4. 强调色（主按钮）
@@ -42,11 +43,11 @@ $primary-colors: (
 // 5. 快捷获取颜色的函数
 @function get-color($type, $key) {
   @if $type == 'day' {
-    @return map-get($day-colors, $key);
+    @return map.get($day-colors, $key);
   } @else if $type == 'night' {
-    @return map-get($night-colors, $key);
+    @return map.get($night-colors, $key);
   } @else if $type == 'primary' {
-    @return map-get($primary-colors, $key);
+    @return map.get($primary-colors, $key);
   }
   @return null;
 }
@@ -54,24 +55,28 @@ $primary-colors: (
 // 6. 全局样式（自动适配白天/夜间模式）
 :root {
   // 白天模式 CSS 变量（供全局使用）
-  --bg: #{map-get($day-colors, bg)};
-  --card: #{map-get($day-colors, card)};
-  --text: #{map-get($day-colors, text)};
-  --text-secondary: #{map-get($day-colors, text-secondary)};
-  --text-tertiary: #{map-get($day-colors, text-tertiary)};
-  --border: #{map-get($day-colors, border)};
-  --primary: #{map-get($primary-colors, default)};
-  --primary-light: #{map-get($primary-colors, light)};
+  --bg: #{map.get($day-colors, bg)};
+  --card: #{map.get($day-colors, card)};
+  --text: #{map.get($day-colors, text)};
+  --text-secondary: #{map.get($day-colors, text-secondary)};
+  --text-tertiary: #{map.get($day-colors, text-tertiary)};
+  --card-reverse: #{map.get($day-colors, card-reverse)};
+  --text-reverse: #{map.get($day-colors, text-reverse)};
+  --border: #{map.get($day-colors, border)};
+  --primary: #{map.get($primary-colors, default)};
+  --primary-light: #{map.get($primary-colors, light)};
 }
 
 // 夜间模式（对应 Tailwind 的 .dark 类）
 .dark {
-  --bg: #{map-get($night-colors, bg)};
-  --card: #{map-get($night-colors, card)};
-  --text: #{map-get($night-colors, text)};
-  --text-secondary: #{map-get($night-colors, text-secondary)};
-  --text-tertiary: #{map-get($night-colors, text-tertiary)};
-  --border: #{map-get($night-colors, border)};
+  --bg: #{map.get($night-colors, bg)};
+  --card: #{map.get($night-colors, card)};
+  --text: #{map.get($night-colors, text)};
+  --text-secondary: #{map.get($night-colors, text-secondary)};
+  --text-tertiary: #{map.get($night-colors, text-tertiary)};
+  --card-reverse: #{map.get($night-colors, card-reverse)};
+  --text-reverse: #{map.get($night-colors, text-reverse)};
+  --border: #{map.get($night-colors, border)};
 }
 
 // 7. 通用样式混入（直接复用配置）

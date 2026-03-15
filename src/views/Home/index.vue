@@ -1,14 +1,34 @@
 ﻿<script setup lang="ts">
-import { ref } from 'vue'
+import { ref, shallowRef, defineAsyncComponent } from 'vue'
+import type { Component } from 'vue'
 
 const isCollapsed = ref(false)
+const activeTab = ref('Books')
 
 const menuItems = [
-  { name: 'Home', icon: 'book' },
-  { name: 'Projects', icon: 'card' },
-  { name: 'Messages', icon: 'video' },
-  { name: 'Settings', icon: 'menu' },
+  { value: 'Books', label: '小说', icon: 'book' },
+  { value: 'Videos', label: '电影', icon: 'video' },
+  { value: 'Settings', label: '设置', icon: 'menu' },
 ]
+
+// 动态组件映射
+const componentMap: Record<string, Component> = {
+  Books: defineAsyncComponent(() => import('@/views/Books/index.vue')),
+  Videos: defineAsyncComponent(() => import('@/views/Videos/index.vue')),
+  Settings: defineAsyncComponent(() => import('@/views/Settings/index.vue')),
+}
+
+// 当前激活的组件
+const currentComponent = shallowRef<Component>(componentMap[activeTab.value]!)
+
+// 切换标签页
+const switchTab = (value: string) => {
+  activeTab.value = value
+  const component = componentMap[value]
+  if (component) {
+    currentComponent.value = component
+  }
+}
 </script>
 
 <template>
@@ -24,43 +44,34 @@ const menuItems = [
       <nav class="sidebar-nav">
         <button
           v-for="item in menuItems"
-          :key="item.name"
+          :key="item.value"
           class="nav-item"
+          :class="{ active: activeTab === item.value }"
+          @click="switchTab(item.value)"
         >
           <span class="icon-wrapper">
             <AppSvgIcon :name="item.icon" :size="14" />
           </span>
-          <span class="item-text" v-if="!isCollapsed">{{ item.name }}</span>
+          <span class="item-text" v-if="!isCollapsed">{{ item.label }}</span>
         </button>
       </nav>
     </aside>
 
-    <!-- <section class="flex min-h-screen flex-1 flex-col">
-      <header
-        class="hidden md:flex items-center justify-between px-8 py-6 border-b border-border sticky top-0 bg-background/95 backdrop-blur z-20"
-      >
-        <h1 class="text-xl font-semibold">Home</h1>
-        <button class="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">
-          <AppSvgIcon name="qiapianxingshi" :size="14" />
-          Create
-        </button>
+    <div class="main-wrapper">
+      <header class="main-header">
       </header>
 
-      <main class="flex-1 p-4 md:p-8 animate-in fade-in duration-500">
-        <div class="rounded-xl border border-border bg-card p-6 shadow-sm">
-          <h2 class="text-lg font-medium">Home content</h2>
-          <p class="mt-2 text-sm text-muted-foreground">
-            This is the main content area and can be expanded with modules later.
-          </p>
-        </div>
+      <main class="main-content">
+        <component :is="currentComponent" />
       </main>
-    </section> -->
+    </div>
   </div>
 </template>
 
-
 <style lang="scss" scoped>
 #home {
+  display: flex;
+  min-height: 100vh;
 
   .aside-sidebar {
     position: sticky;
@@ -71,44 +82,44 @@ const menuItems = [
     border-right: 1px solid var(--border);
     background-color: var(--card);
     transition: all 300ms ease;
-  
+
     &.collapsed {
-      width: 4rem; // w-20 (20px=5rem，1rem=4px 是 Tailwind 默认基准)
+      width: 4rem;
     }
     &:not(.collapsed) {
-      width: 16rem; // w-64 (64px=16rem)
+      width: 16rem;
     }
-  
+
     // 侧边栏头部（标题+折叠按钮）
     .sidebar-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--border);
-      padding: 1rem; // px-4 py-4
-      font-size: 0.875rem; // text-sm
-  
+      padding: 1rem;
+      font-size: 0.875rem;
+
       .sidebar-title {
-        font-weight: 600; // font-semibold
-        letter-spacing: 0.05em; // tracking-wide
+        font-weight: 600;
+        letter-spacing: 0.05em;
       }
-  
+
       // 折叠按钮
       .collapse-btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 2.25rem; // w-9
-        height: 2.25rem; // h-9
+        width: 2.25rem;
+        height: 2.25rem;
         border: 1px solid var(--border);
-        border-radius: 0.375rem; // rounded-md
-        font-size: 0.875rem; // text-sm
-        transition: color background-color 300ms ease; // transition-colors
-  
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        transition: color background-color 300ms ease;
+
         &:hover {
-          background-color: var(--muted); // hover:bg-muted
+          background-color: var(--muted);
         }
-  
+
         .sr-only {
           position: absolute;
           width: 1px;
@@ -120,61 +131,75 @@ const menuItems = [
           white-space: nowrap;
           border-width: 0;
         }
-  
+
         svg {
-          width: 1rem; // size=16
+          width: 1rem;
           height: 1rem;
         }
       }
     }
-  
+
     // 侧边栏导航区域
     .sidebar-nav {
       flex: 1;
-      padding: 0.75rem; // p-3
-      margin-top: 0.5rem; // space-y-2 拆分为子元素 margin
+      padding: 0.75rem;
+      margin-top: 0.5rem;
       margin-bottom: 0.5rem;
-  
+
       // 导航菜单项
       .nav-item {
         display: flex;
         align-items: center;
         width: 100%;
-        gap: 0.75rem; // gap-3
-        padding: 0.5rem 0.75rem; // px-3 py-2
-        border-radius: 0.375rem; // rounded-md
+        gap: 0.75rem;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.375rem;
         text-align: left;
-        font-size: 0.875rem; // text-sm
-        transition: background-color 300ms ease; // transition-colors
-  
+        font-size: 0.875rem;
+        transition: background-color 300ms ease;
+        cursor: pointer;
+        border: none;
+        background: transparent;
+        color: var(--text);
+
         &:hover {
-          background-color: var(--muted); // hover:bg-muted
+          background-color: var(--muted);
         }
-  
+
+        &.active {
+          background-color: var(--primary);
+          color: white;
+
+          .icon-wrapper {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+          }
+        }
+
         // 折叠状态下的菜单项样式
         .aside-sidebar.collapsed & {
           justify-content: center;
           padding-left: 0;
           padding-right: 0;
         }
-  
+
         // 菜单图标容器
         .icon-wrapper {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          width: 1.5rem; // w-6
-          height: 1.5rem; // h-6
-          border-radius: 0.25rem; // rounded
-          background-color: var(--muted); // bg-muted
-          color: var(--foreground); // text-foreground
-  
+          width: 1.5rem;
+          height: 1.5rem;
+          border-radius: 0.25rem;
+          background-color: var(--muted);
+          color: var(--foreground);
+
           svg {
-            width: 0.875rem; // size=14
+            width: 0.875rem;
             height: 0.875rem;
           }
         }
-  
+
         // 菜单文字
         .item-text {
           // 折叠时隐藏文字（对应 v-if="!isCollapsed"）
@@ -183,6 +208,27 @@ const menuItems = [
           }
         }
       }
+    }
+  }
+
+  .main-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    .main-header {
+      height: 4rem;
+      border-bottom: 1px solid var(--border);
+      background-color: var(--card);
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+    }
+
+    .main-content {
+      flex: 1;
+      overflow-y: auto;
     }
   }
 }
