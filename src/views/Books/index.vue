@@ -23,7 +23,7 @@
 
     <div class="content">
       <!-- 这里放图书列表内容 -->
-      <BookContent />
+      <BookCase />
     </div>
   </div>
 </template>
@@ -32,7 +32,7 @@
 import { ref } from 'vue'
 import SettingWrap from './components/settingWrap.vue'
 import SearchWrap from './components/searchWrap.vue'
-import BookContent from './bookContent.vue'
+import BookCase from './bookCase.vue'
 
 // 图书分组
 const bookGroup = ref([
