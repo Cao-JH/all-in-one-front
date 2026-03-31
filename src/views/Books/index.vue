@@ -23,7 +23,7 @@
 
     <div class="content">
       <!-- 这里放图书列表内容 -->
-      <BookCase />
+      <BookCase :group="activeGroup" />
     </div>
   </div>
 </template>
