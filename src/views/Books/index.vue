@@ -2,7 +2,7 @@
   <div id="books-index">
     <nav class="tab-bar">
       <div class="bar-left">
-        <button
+        <!-- <button
           v-for="group in bookGroup"
           :key="group.value"
           class="tab-item"
@@ -10,10 +10,17 @@
           @click="activeGroup = group.value"
         >
           {{ group.label }}
-        </button>
-        <span class="tab-item icon">
-          <AppSvgIcon name="add" :size="20" />
-        </span>
+        </button> -->
+        <Tabs value="default" scrollable>
+          <TabList>
+            <Tab v-for="group in bookGroup" :key="group.value" :value="group.value">
+              {{ group.label }}
+            </Tab>
+            <span class="tab-item icon">
+              <AppSvgIcon name="add" :size="20" />
+            </span>
+          </TabList>
+        </Tabs>
       </div>
       <div class="bar-right">
         <SearchWrap />
@@ -40,6 +47,38 @@ const bookGroup = ref([
   { label: '常看', value: '111' },
   { label: '看完', value: '222' },
   { label: '玄幻', value: '333' },
+  { label: '玄幻', value: '444' },
+  { label: '玄幻', value: '555' },
+  { label: '玄幻', value: '666' },
+  { label: '玄幻', value: '777' },
+  { label: '玄幻', value: '888' },
+  { label: '玄幻', value: '999' },
+  { label: '玄幻', value: '1223' },
+  { label: '玄幻', value: '12223' },
+  { label: '玄幻', value: '12323' },
+  { label: '玄幻', value: '12423' },
+  { label: '玄幻', value: '12523' },
+  { label: '玄幻', value: '12523' },
+  { label: '玄幻', value: '12323' },
+  { label: '玄幻', value: '133223' },
+  { label: '玄幻', value: '124423' },
+  { label: '玄幻', value: '125523' },
+  { label: '玄幻', value: '123323' },
+  { label: '玄幻', value: '124423' },
+  { label: '玄幻', value: '12444523' },
+  { label: '玄幻', value: '12121232323' },
+  { label: '玄幻', value: '1221312323' },
+  { label: '玄幻', value: '121123324212323' },
+  { label: '玄幻', value: '12121432142323' },
+  { label: '玄幻', value: '1212131323' },
+  { label: '玄幻', value: '1212122323' },
+  { label: '玄幻', value: '12134322323' },
+  { label: '玄幻', value: '12123546723' },
+  { label: '玄幻', value: '121752323' },
+  { label: '玄幻', value: '121287689323' },
+  { label: '玄幻', value: '121287323' },
+  { label: '玄幻', value: '121290323' },
+  { label: '玄幻', value: '121238023' },
 ])
 const activeGroup = ref('default')
 </script>
@@ -51,12 +90,23 @@ const activeGroup = ref('default')
     padding: 1rem 2rem;
     background-color: transparent;
     align-items: center;
-    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
 
     .bar-left {
-      flex: 1;
+      flex: 8;
+      min-width: 0;
       display: flex;
       align-items: center;
+
+      :deep(.p-tabs) {
+        width: 100%;
+        min-width: 0;
+      }
+
+      :deep(.p-tablist) {
+        width: 100%;
+      }
 
       .tab-item {
         border: none;
@@ -89,7 +139,8 @@ const activeGroup = ref('default')
     }
 
     .bar-right {
-      flex: 0.25;
+      flex: 2;
+      min-width: 0;
       display: flex;
       align-items: center;
       justify-content: flex-end;

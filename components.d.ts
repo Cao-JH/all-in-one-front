@@ -13,9 +13,11 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppSvgIcon: typeof import('./src/components/common/AppSvgIcon.vue')['default']
     BookCard: typeof import('./src/components/BookCard.vue')['default']
-    Button: typeof import('primevue/button')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Tab: typeof import('primevue/tab')['default']
+    TabList: typeof import('primevue/tablist')['default']
+    Tabs: typeof import('primevue/tabs')['default']
     TopBar: typeof import('./src/components/TopBar.vue')['default']
   }
 }
