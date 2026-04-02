@@ -1,7 +1,6 @@
 @use "sass:map";
 
-// 1. 基础变量（复用核心值）
-$font-family-sans: 'Inter', '阿里巴巴普惠体', system-ui, sans-serif;
+$font-family-sans: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
 $line-height-title: 1.4;
 $line-height-body: 1.6;
 $line-height-read: 1.7;
@@ -10,37 +9,33 @@ $border-radius-btn: 6px;
 $spacing-book: 16px;
 $spacing-nav: 24px;
 
-// 2. 白天模式配色
 $day-colors: (
-  bg: #FFFFFF,
-  card: #FAFAFC,
-  text: #1F2937,
-  text-secondary: #6B7280,
-  text-tertiary: #9CA3AF,
-  border: #E5E7EB,
+  bg: #ffffff,
+  card: #fafafc,
+  text: #1f2937,
+  text-secondary: #6b7280,
+  text-tertiary: #9ca3af,
+  border: #e5e7eb,
   card-reverse: #000000,
-  text-reverse: #FFFFFF,
+  text-reverse: #ffffff,
 );
 
-// 3. 夜间模式配色
 $night-colors: (
   bg: #121826,
-  card: #1E293B,
-  text: #F9FAFB,
-  text-secondary: #9CA3AF,
-  text-tertiary: #6B7280,
+  card: #1e293b,
+  text: #f9fafb,
+  text-secondary: #9ca3af,
+  text-tertiary: #6b7280,
   border: #374151,
-  card-reverse: #FAFAFC,
-  text-reverse: #1F2937,
+  card-reverse: #fafafc,
+  text-reverse: #1f2937,
 );
 
-// 4. 强调色（主按钮）
 $primary-colors: (
   default: #000000,
-  light: #111827
+  light: #111827,
 );
 
-// 5. 快捷获取颜色的函数
 @function get-color($type, $key) {
   @if $type == 'day' {
     @return map.get($day-colors, $key);
@@ -52,11 +47,11 @@ $primary-colors: (
   @return null;
 }
 
-// 6. 全局样式（自动适配白天/夜间模式）
 :root {
-  // 白天模式 CSS 变量（供全局使用）
   --bg: #{map.get($day-colors, bg)};
+  --bg-card: #{map.get($day-colors, card)};
   --card: #{map.get($day-colors, card)};
+  --text-primary: #{map.get($day-colors, text)};
   --text: #{map.get($day-colors, text)};
   --text-secondary: #{map.get($day-colors, text-secondary)};
   --text-tertiary: #{map.get($day-colors, text-tertiary)};
@@ -67,10 +62,11 @@ $primary-colors: (
   --primary-light: #{map.get($primary-colors, light)};
 }
 
-// 夜间模式（对应 Tailwind 的 .dark 类）
-.dark {
+.my-app-dark {
   --bg: #{map.get($night-colors, bg)};
+  --bg-card: #{map.get($night-colors, card)};
   --card: #{map.get($night-colors, card)};
+  --text-primary: #{map.get($night-colors, text)};
   --text: #{map.get($night-colors, text)};
   --text-secondary: #{map.get($night-colors, text-secondary)};
   --text-tertiary: #{map.get($night-colors, text-tertiary)};
@@ -79,7 +75,6 @@ $primary-colors: (
   --border: #{map.get($night-colors, border)};
 }
 
-// 7. 通用样式混入（直接复用配置）
 @mixin font-sans {
   font-family: $font-family-sans;
 }
@@ -112,15 +107,13 @@ $primary-colors: (
   }
 }
 
-// 8. 全局基础样式（可选，根据项目调整）
 body {
   @include font-sans;
   background-color: var(--bg);
   color: var(--text);
-  transition: background-color 0.3s, color 0.3s; // 模式切换过渡
+  transition: background-color 0.3s, color 0.3s;
 }
 
-// 示例：卡片样式（直接复用变量）
 .card {
   background-color: var(--card);
   border: 1px solid var(--border);
@@ -128,12 +121,12 @@ body {
   @include spacing(book);
 }
 
-// 示例：按钮样式
 .btn-primary {
   background-color: var(--primary);
   color: white;
   @include border-radius(btn);
   padding: 8px 16px;
+
   &:hover {
     background-color: var(--primary-light);
   }

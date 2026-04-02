@@ -29,37 +29,47 @@ const switchTab = (value: string) => {
     currentComponent.value = component
   }
 }
+
+const toggleDarkMode = () => {
+  document.documentElement.classList.toggle('my-app-dark')
+}
 </script>
 
 <template>
   <div id="home">
-    <aside class="aside-sidebar" :class="{ collapsed: isCollapsed }">
-      <div class="sidebar-header">
-        <span class="sidebar-title" v-if="!isCollapsed">AIO</span>
-        <button class="collapse-btn" @click="isCollapsed = !isCollapsed">
-          <AppSvgIcon name="menu" :size="16" />
-        </button>
-      </div>
-
-      <nav class="sidebar-nav">
-        <button
-          v-for="item in menuItems"
-          :key="item.value"
-          class="nav-item"
-          :class="{ active: activeTab === item.value }"
-          @click="switchTab(item.value)"
-        >
-          <span class="icon-wrapper">
-            <AppSvgIcon :name="item.icon" :size="14" />
-          </span>
-          <span class="item-text" v-if="!isCollapsed">{{ item.label }}</span>
-        </button>
-      </nav>
-    </aside>
+    <div class="sidebar">
+      <Menu :model="menuItems" class="sidebar-menu">
+        <template #item="{ item, props }">
+          <Button
+            v-bind="props.action"
+            v-tooltip.right="item.label"
+            class="menu-button"
+            :class="{ active: activeTab === item.value }"
+            severity="secondary"
+            text
+            @click="switchTab(item.value)"
+          >
+            <AppSvgIcon :name="item.icon" :size="18" />
+          </Button>
+        </template>
+        <template #end>
+          <div class="menu-footer">
+            <Button
+              v-tooltip.right="'Toggle Dark Mode'"
+              class="menu-button"
+              severity="secondary"
+              text
+              @click="toggleDarkMode()"
+            >
+              <AppSvgIcon name="menu" :size="18" />
+            </Button>
+          </div>
+        </template>
+      </Menu>
+    </div>
 
     <div class="main-wrapper">
-      <header class="main-header">
-      </header>
+      <header class="main-header"></header>
 
       <main class="main-content">
         <component :is="currentComponent" />
@@ -71,143 +81,75 @@ const switchTab = (value: string) => {
 <style lang="scss" scoped>
 #home {
   display: flex;
-  min-height: 100vh;
+  width: 100%;
+  height: 100vh;
+  padding: 1.5rem;
+  gap: 1.5rem;
+  align-items: flex-start;
 
-  .aside-sidebar {
-    position: sticky;
-    top: 0;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    border-right: 1px solid var(--border);
-    background-color: var(--card);
-    transition: all 300ms ease;
+  .sidebar {
+    width: auto;
+    height: 100%;
 
-    &.collapsed {
-      width: 4rem;
-    }
-    &:not(.collapsed) {
-      width: 16rem;
-    }
-
-    // 侧边栏头部（标题+折叠按钮）
-    .sidebar-header {
+    :deep(.p-menu) {
+      width: auto;
+      min-width: 0;
+      height: 100%;
+      padding: 1.25rem;
+      border-radius: 1rem;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      padding: 1rem;
-      font-size: 0.875rem;
+      gap: 1rem;
+    }
 
-      .sidebar-title {
-        font-weight: 600;
-        letter-spacing: 0.05em;
+    .sidebar-menu {
+      :deep(.p-menu-list) {
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
       }
 
-      // 折叠按钮
-      .collapse-btn {
-        display: inline-flex;
-        align-items: center;
+      :deep(.p-menu-item) {
+        width: auto;
+      }
+
+      :deep(.p-menu-item-content) {
+        display: flex;
+        border-radius: 0.5rem;
         justify-content: center;
-        width: 2.25rem;
-        height: 2.25rem;
-        border: 1px solid var(--border);
-        border-radius: 0.375rem;
-        font-size: 0.875rem;
-        transition: color background-color 300ms ease;
-
-        &:hover {
-          background-color: var(--muted);
-        }
-
-        .sr-only {
-          position: absolute;
-          width: 1px;
-          height: 1px;
-          padding: 0;
-          margin: -1px;
-          overflow: hidden;
-          clip: rect(0, 0, 0, 0);
-          white-space: nowrap;
-          border-width: 0;
-        }
-
-        svg {
-          width: 1rem;
-          height: 1rem;
-        }
       }
     }
 
-    // 侧边栏导航区域
-    .sidebar-nav {
-      flex: 1;
-      padding: 0.75rem;
-      margin-top: 0.5rem;
-      margin-bottom: 0.5rem;
+    .menu-button {
+      width: 3rem;
+      height: 3rem;
+      min-width: 3rem;
+      padding: 0;
+      border-radius: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
 
-      // 导航菜单项
-      .nav-item {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        gap: 0.75rem;
-        padding: 0.5rem 0.75rem;
-        border-radius: 0.375rem;
-        text-align: left;
-        font-size: 0.875rem;
-        transition: background-color 300ms ease;
-        cursor: pointer;
-        border: none;
-        background: transparent;
-        color: var(--text);
-
-        &:hover {
-          background-color: var(--muted);
-        }
-
-        &.active {
-          background-color: var(--primary);
-          color: white;
-
-          .icon-wrapper {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-          }
-        }
-
-        // 折叠状态下的菜单项样式
-        .aside-sidebar.collapsed & {
-          justify-content: center;
-          padding-left: 0;
-          padding-right: 0;
-        }
-
-        // 菜单图标容器
-        .icon-wrapper {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          width: 1.5rem;
-          height: 1.5rem;
-          border-radius: 0.25rem;
-          background-color: var(--muted);
-          color: var(--foreground);
-
-          svg {
-            width: 0.875rem;
-            height: 0.875rem;
-          }
-        }
-
-        // 菜单文字
-        .item-text {
-          // 折叠时隐藏文字（对应 v-if="!isCollapsed"）
-          .aside-sidebar.collapsed & {
-            display: none;
-          }
-        }
+      :deep(.p-button-label) {
+        display: none;
       }
+
+      :deep(svg) {
+        display: block;
+      }
+
+      &.active {
+        background: #0f1320;
+        color: #fff;
+        border-color: #0f1320;
+      }
+    }
+
+    .menu-footer {
+      display: flex;
+      justify-content: center;
     }
   }
 
