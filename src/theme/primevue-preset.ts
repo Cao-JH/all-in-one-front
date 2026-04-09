@@ -28,6 +28,10 @@ export const primeVuePreset = definePreset(Aura, {
           hoverColor: '{primary.700}',
           activeColor: '{surface.900}',
         },
+        menuItem: {
+          hoverColor: '{surface.950}',
+          hoverBackground: '{surface.100}',
+        },
         highlight: {
           background: '{primary.50}',
           focusBackground: '{primary.100}',
@@ -91,6 +95,10 @@ export const primeVuePreset = definePreset(Aura, {
           contrastColor: '#ffffff',
           hoverColor: '{primary.300}',
           activeColor: '{surface.900}',
+        },
+        menuItem: {
+          hoverColor: '{surface.950}',
+          hoverBackground: '{surface.100}',
         },
         highlight: {
           background: '{primary.950}',

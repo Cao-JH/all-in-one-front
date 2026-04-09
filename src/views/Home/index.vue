@@ -30,7 +30,9 @@ const switchTab = (value: string) => {
   }
 }
 
+const toggleIcon = ref('pi-sun');
 const toggleDarkMode = () => {
+  toggleIcon.value = toggleIcon.value === 'pi-sun' ? 'pi-moon' : 'pi-sun';
   document.documentElement.classList.toggle('my-app-dark')
 }
 </script>
@@ -55,13 +57,13 @@ const toggleDarkMode = () => {
         <template #end>
           <div class="menu-footer">
             <Button
-              v-tooltip.right="'Toggle Dark Mode'"
               class="menu-button"
               severity="secondary"
               text
               @click="toggleDarkMode()"
             >
-              <AppSvgIcon name="menu" :size="18" />
+              <!-- <AppSvgIcon name="menu" :size="18" /> -->
+              <i :class="`pi ${toggleIcon}`"></i>
             </Button>
           </div>
         </template>
@@ -106,22 +108,25 @@ const toggleDarkMode = () => {
       background-color: var(--p-surface-50);
     }
 
-    .sidebar-menu {
-      :deep(.p-menu-list) {
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-      }
+    :deep(.p-menu-list) {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
 
-      :deep(.p-menu-item) {
-        width: auto;
-      }
+    :deep(.p-menu-item) {
+      width: auto;
+    }
 
-      :deep(.p-menu-item-content) {
-        display: flex;
-        border-radius: 0.5rem;
-        justify-content: center;
+    :deep(.p-menu-item-content) {
+      display: flex;
+      border-radius: 0.5rem;
+      justify-content: center;
+
+      &:hover {
+        background: transparent;
+        color: inherit;
       }
     }
 
@@ -134,19 +139,30 @@ const toggleDarkMode = () => {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      transition: all 0.2s ease;
 
-      :deep(.p-button-label) {
-        display: none;
-      }
-
-      :deep(svg) {
-        display: block;
+      &:hover {
+        color: var(--p-menu-item-hover-color);
+        background: var(--p-menu-item-hover-background);
       }
 
       &.active {
         background: var(--p-primary-active-color);
         color: var(--p-primary-color);
         border: none;
+
+        &:hover {
+          background: var(--p-surface-700);
+        }
+      }
+      
+      :deep(.p-button-label) {
+        display: none;
+      }
+
+      :deep(svg),
+      :deep(i) {
+        display: block;
       }
     }
 
