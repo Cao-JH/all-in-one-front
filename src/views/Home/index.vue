@@ -86,6 +86,7 @@ const toggleDarkMode = () => {
   padding: 1.5rem;
   gap: 1.5rem;
   align-items: flex-start;
+  background-color: var(--p-primary-background);
 
   .sidebar {
     width: auto;
@@ -97,10 +98,12 @@ const toggleDarkMode = () => {
       height: 100%;
       padding: 1.25rem;
       border-radius: 1rem;
+      border: none;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       gap: 1rem;
+      background-color: var(--p-surface-50);
     }
 
     .sidebar-menu {
@@ -141,9 +144,9 @@ const toggleDarkMode = () => {
       }
 
       &.active {
-        background: #0f1320;
-        color: #fff;
-        border-color: #0f1320;
+        background: var(--p-primary-active-color);
+        color: var(--p-primary-color);
+        border: none;
       }
     }
 
