@@ -129,7 +129,7 @@ export const primeVuePreset = definePreset(Aura, {
         content: {
           background: '{surface.50}',
           hoverBackground: '{surface.100}',
-          borderColor: '{surface.700}',
+          borderColor: '{surface.200}',
           color: '{surface.200}',
           hoverColor: '{surface.100}',
         },
@@ -153,6 +153,70 @@ export const primeVuePreset = definePreset(Aura, {
           floatLabelInvalidColor: '#ef4444',
           iconColor: '{surface.400}',
           shadow: '0 1px 2px 0 rgb(0 0 0 / 0.3)',
+        },
+      },
+    },
+  },
+  components: {
+    button: {
+      colorScheme: {
+        light: {
+          root: {
+            secondary: {
+              background: '{surface.100}',
+              hoverBackground: '{surface.200}',
+              borderColor: '{surface.100}',
+              hoverBorderColor: '{surface.200}',
+              color: '{surface.600}',
+              hoverColor: '{surface.950}',
+            },
+          },
+        },
+        dark: {
+          root: {
+            secondary: {
+              background: '{surface.100}',
+              hoverBackground: '{surface.200}',
+              borderColor: '{surface.100}',
+              hoverBorderColor: '{surface.200}',
+              color: '{surface.600}',
+              hoverColor: '{surface.950}',
+            },
+          },
+        },
+      },
+    },
+    togglebutton: {
+      colorScheme: {
+        light: {
+          root: {
+            color: '{surface.500}',
+            hoverColor: '{surface.600}',
+            background: '{surface.100}',
+            hoverBackground: '{surface.100}',
+            borderColor: '{surface.100}',
+            checkedColor: '{surface.950}',
+            checkedBackground: '{surface.100}',
+            checkedBorderColor: '{surface.100}',
+          },
+          content: {
+            checkedBackground: '{surface.0}',
+          },
+        },
+        dark: {
+          root: {
+            color: '{surface.500}',
+            hoverColor: '{surface.600}',
+            background: '{surface.100}',
+            hoverBackground: '{surface.100}',
+            borderColor: '{surface.100}',
+            checkedColor: '{surface.950}',
+            checkedBackground: '{surface.100}',
+            checkedBorderColor: '{surface.100}',
+          },
+          content: {
+            checkedBackground: '{surface.50}',
+          },
         },
       },
     },

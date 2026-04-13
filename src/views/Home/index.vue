@@ -30,9 +30,9 @@ const switchTab = (value: string) => {
   }
 }
 
-const toggleIcon = ref('pi-sun');
+const toggleIcon = ref('pi-sun')
 const toggleDarkMode = () => {
-  toggleIcon.value = toggleIcon.value === 'pi-sun' ? 'pi-moon' : 'pi-sun';
+  toggleIcon.value = toggleIcon.value === 'pi-sun' ? 'pi-moon' : 'pi-sun'
   document.documentElement.classList.toggle('my-app-dark')
 }
 </script>
@@ -56,12 +56,7 @@ const toggleDarkMode = () => {
         </template>
         <template #end>
           <div class="menu-footer">
-            <Button
-              class="menu-button"
-              severity="secondary"
-              text
-              @click="toggleDarkMode()"
-            >
+            <Button class="menu-button" severity="secondary" text @click="toggleDarkMode()">
               <!-- <AppSvgIcon name="menu" :size="18" /> -->
               <i :class="`pi ${toggleIcon}`"></i>
             </Button>
@@ -71,8 +66,6 @@ const toggleDarkMode = () => {
     </div>
 
     <div class="main-wrapper">
-      <header class="main-header"></header>
-
       <main class="main-content">
         <component :is="currentComponent" />
       </main>
@@ -155,7 +148,7 @@ const toggleDarkMode = () => {
           background: var(--p-surface-700);
         }
       }
-      
+
       :deep(.p-button-label) {
         display: none;
       }
@@ -173,19 +166,17 @@ const toggleDarkMode = () => {
   }
 
   .main-wrapper {
-    flex: 1;
+    border: 1px solid var(--p-content-border-color);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    overflow-x: clip;
+    overflow-y: auto;
     display: flex;
+    flex: 1 1 0%;
+    gap: 1.5rem;
     flex-direction: column;
-    min-height: 100vh;
-
-    .main-header {
-      height: 4rem;
-      border-bottom: 1px solid var(--border);
-      background-color: var(--card);
-      display: flex;
-      align-items: center;
-      padding: 0 2rem;
-    }
+    height: 100%;
+    width: auto;
 
     .main-content {
       flex: 1;
