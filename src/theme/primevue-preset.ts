@@ -3,7 +3,6 @@ import Aura from '@primeuix/themes/aura'
 
 export const primeVuePreset = definePreset(Aura, {
   semantic: {
-    // 🔥 官方主色：Noir（中性黑灰系）
     primary: {
       0: '#ffffff',
       50: '#f9fafb',
@@ -73,9 +72,9 @@ export const primeVuePreset = definePreset(Aura, {
           filledFocusBackground: '{surface.0}',
           borderColor: '{surface.300}',
           hoverBorderColor: '{surface.400}',
-          focusBorderColor: '{primary.600}',
+          focusBorderColor: '{surface.900}',
           invalidBorderColor: '#ef4444',
-          color: '{surface.900}',
+          color: '{surface.950}',
           disabledColor: '{surface.400}',
           placeholderColor: '{surface.500}',
           invalidPlaceholderColor: '#ef4444',
@@ -85,6 +84,55 @@ export const primeVuePreset = definePreset(Aura, {
           floatLabelInvalidColor: '#ef4444',
           iconColor: '{surface.500}',
           shadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+        },
+        overlay: {
+          select: {
+            background: '{surface.50}',
+            borderColor: '{surface.200}',
+            color: '{surface.200}',
+          },
+          popover: {
+            background: '{surface.50}',
+            borderColor: '{surface.200}',
+            color: '{surface.200}',
+          },
+          modal: {
+            background: '{surface.0}',
+            borderColor: '{surface.200}',
+            color: '{surface.950}',
+          },
+        },
+        list: {
+          option: {
+            focusBackground: '{surface.100}',
+            selectedBackground: '{surface.200}',
+            selectedFocusBackground: '{surface.200}',
+            color: '{surface.300}',
+            focusColor: '{surface.200}',
+            selectedColor: '{surface.950}',
+            selectedFocusColor: '{surface.950}',
+          },
+          optionGroup: {
+            background: 'transparent',
+            color: '{surface.400}',
+          },
+        },
+        navigation: {
+          item: {
+            focusBackground: '{surface.100}',
+            activeBackground: '{surface.100}',
+            color: '{surface.300}',
+            focusColor: '{surface.200}',
+            activeColor: '{surface.200}',
+          },
+          submenuLabel: {
+            background: 'transparent',
+            color: '{surface.400}',
+          },
+        },
+        mask: {
+          background: 'rgba(0,0,0,0.6)',
+          color: '{surface.200}',
         },
       },
       // 深色模式 - Surface: Slate
@@ -134,16 +182,16 @@ export const primeVuePreset = definePreset(Aura, {
           hoverColor: '{surface.100}',
         },
         formField: {
-          background: '{surface.50}',
+          background: '{surface.0}',
           disabledBackground: '{surface.100}',
           filledBackground: '{surface.100}',
           filledHoverBackground: '{surface.200}',
           filledFocusBackground: '{surface.50}',
-          borderColor: '{surface.600}',
-          hoverBorderColor: '{surface.500}',
-          focusBorderColor: '{primary.400}',
+          borderColor: '{surface.300}',
+          hoverBorderColor: '{surface.400}',
+          focusBorderColor: '{surface.900}',
           invalidBorderColor: '#ef4444',
-          color: '{surface.200}',
+          color: '{surface.950}',
           disabledColor: '{surface.500}',
           placeholderColor: '{surface.400}',
           invalidPlaceholderColor: '#ef4444',
@@ -154,6 +202,55 @@ export const primeVuePreset = definePreset(Aura, {
           iconColor: '{surface.400}',
           shadow: '0 1px 2px 0 rgb(0 0 0 / 0.3)',
         },
+        overlay: {
+          select: {
+            background: '{surface.50}',
+            borderColor: '{surface.200}',
+            color: '{surface.200}',
+          },
+          popover: {
+            background: '{surface.50}',
+            borderColor: '{surface.200}',
+            color: '{surface.200}',
+          },
+          modal: {
+            background: '{surface.0}',
+            borderColor: '{surface.200}',
+            color: '{surface.950}',
+          },
+        },
+        list: {
+          option: {
+            focusBackground: '{surface.100}',
+            selectedBackground: '{surface.200}',
+            selectedFocusBackground: '{surface.200}',
+            color: '{surface.300}',
+            focusColor: '{surface.200}',
+            selectedColor: '{surface.950}',
+            selectedFocusColor: '{surface.950}',
+          },
+          optionGroup: {
+            background: 'transparent',
+            color: '{surface.400}',
+          },
+        },
+        navigation: {
+          item: {
+            focusBackground: '{surface.100}',
+            activeBackground: '{surface.100}',
+            color: '{surface.300}',
+            focusColor: '{surface.200}',
+            activeColor: '{surface.200}',
+          },
+          submenuLabel: {
+            background: 'transparent',
+            color: '{surface.400}',
+          },
+        },
+        mask: {
+          background: 'rgba(0,0,0,0.6)',
+          color: '{surface.200}',
+        },
       },
     },
   },
@@ -162,6 +259,11 @@ export const primeVuePreset = definePreset(Aura, {
       colorScheme: {
         light: {
           root: {
+            primary: {
+              color: '{surface.0}',
+              background: '{surface.950}',
+              borderColor: '{surface.950}',
+            },
             secondary: {
               background: '{surface.100}',
               hoverBackground: '{surface.200}',
@@ -171,9 +273,21 @@ export const primeVuePreset = definePreset(Aura, {
               hoverColor: '{surface.950}',
             },
           },
+          outlined: {
+            primary: {
+              hoverBackground: '{surface.50}',
+              borderColor: '{surface.300}',
+              color: '{surface.900}',
+            },
+          },
         },
         dark: {
           root: {
+            primary: {
+              color: '{surface.0}',
+              background: '{surface.950}',
+              borderColor: '{surface.950}',
+            },
             secondary: {
               background: '{surface.100}',
               hoverBackground: '{surface.200}',
@@ -181,6 +295,13 @@ export const primeVuePreset = definePreset(Aura, {
               hoverBorderColor: '{surface.200}',
               color: '{surface.600}',
               hoverColor: '{surface.950}',
+            },
+          },
+          outlined: {
+            primary: {
+              hoverBackground: '{surface.50}',
+              borderColor: '{surface.300}',
+              color: '{surface.900}',
             },
           },
         },
@@ -218,6 +339,13 @@ export const primeVuePreset = definePreset(Aura, {
             checkedBackground: '{surface.50}',
           },
         },
+      },
+    },
+    tooltip: {
+      root: {
+        padding: '0.325rem 0.625rem',
+        maxWidth: '10rem',
+        borderRadius: '0.25rem',
       },
     },
   },

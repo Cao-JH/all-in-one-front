@@ -39,9 +39,21 @@
           :disabled="currentPage === totalPages - 1"
           @click="nextPage"
         />
+        <Button icon="pi pi-plus" severity="secondary" size="small" @click="openGroupDialog" />
       </div>
       <div class="bar-right">
-        <SearchWrap />
+        <div class="w-full">
+          <IconField>
+            <InputIcon class="pi pi-search" />
+            <InputText
+              v-model="searchKeyword"
+              type="text"
+              size="small"
+              placeholder="搜索书名、作者"
+              class="h-8 w-full"
+            />
+          </IconField>
+        </div>
         <SettingWrap />
       </div>
     </nav>
@@ -50,12 +62,39 @@
       <BookCase :group="activeGroup" />
     </div>
   </div>
+
+  <Dialog
+    v-model:visible="groupDialogVisible"
+    modal
+    header="新增分组"
+    class="dialog-box"
+    :style="{ width: '25rem' }"
+  >
+    <div class="flex items-center gap-4 mb-4">
+      <InputText
+        v-model="groupName"
+        size="small"
+        id="groupName"
+        class="flex-auto"
+        autocomplete="off"
+      />
+    </div>
+    <div class="flex justify-end gap-2">
+      <Button
+        type="button"
+        label="取消"
+        size="small"
+        severity="secondary"
+        @click="groupDialogVisible = false"
+      ></Button>
+      <Button size="small" type="button" label="添加" @click="addNewGroup"></Button>
+    </div>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import SettingWrap from './components/settingWrap.vue'
-import SearchWrap from './components/searchWrap.vue'
 import BookCase from './bookCase.vue'
 
 const PAGE_SIZE = 8
@@ -92,6 +131,23 @@ const prevPage = () => {
 const nextPage = () => {
   if (currentPage.value < totalPages.value - 1) currentPage.value++
 }
+
+// tab栏新增group
+const groupDialogVisible = ref(false)
+const groupName = ref('')
+const openGroupDialog = () => {
+  groupDialogVisible.value = true
+}
+const addNewGroup = () => {
+  const temp = { label: groupName.value, value: Date.now().toString() }
+  bookGroup.value.push(temp)
+  groupDialogVisible.value = false
+  activeGroup.value = temp.value // tab栏选中新增的标签
+  currentPage.value = totalPages.value - 1 // tab栏同步跳转到当前页
+}
+
+// 搜索
+const searchKeyword = ref('')
 </script>
 
 <style lang="scss" scoped>

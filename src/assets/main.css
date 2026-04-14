@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 :root {
   --background: 210 40% 98%;
@@ -15,6 +13,10 @@
 
 * {
   box-sizing: border-box;
+}
+
+.p-tooltip .p-tooltip-text {
+  font-size: 0.75rem;
 }
 
 body {

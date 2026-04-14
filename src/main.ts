@@ -1,5 +1,4 @@
-﻿import './styles/reset.css'
-import './assets/main.css'
+﻿import './assets/main.css'
 import '@/assets/icons/iconfont/iconfont.js'
 import './styles/_variables.scss'
 import 'primeicons/primeicons.css'
@@ -21,7 +20,7 @@ app.use(router).use(PrimeVue, {
     preset: primeVuePreset,
     options: {
       darkModeSelector: '.my-app-dark',
-    }
+    },
   },
 })
 app.directive('tooltip', Tooltip)

@@ -91,7 +91,7 @@ const toggleDarkMode = () => {
       width: auto;
       min-width: 0;
       height: 100%;
-      padding: 1.25rem;
+      padding: 1.5rem;
       border-radius: 1rem;
       border: none;
       display: flex;
@@ -169,13 +169,12 @@ const toggleDarkMode = () => {
     border: 1px solid var(--p-content-border-color);
     padding: 1.5rem;
     border-radius: 1rem;
-    overflow-x: clip;
-    overflow-y: auto;
+    overflow: hidden;
     display: flex;
     flex: 1 1 0%;
     gap: 1.5rem;
     flex-direction: column;
-    height: 100%;
+    min-height: 0;
     width: auto;
 
     .main-content {

@@ -1,6 +1,6 @@
 <template>
   <div ref="settingWrapRef" id="setting-wrap">
-    <button class="btn setting" :class="{ active: showActionPopover }" @click="toggleActionPopover">
+    <!-- <button class="btn setting" :class="{ active: showActionPopover }" @click="toggleActionPopover">
       <AppSvgIcon name="card" :size="20" />
     </button>
     <Transition name="action-popover">
@@ -20,7 +20,31 @@
           </div>
         </div>
       </div>
-    </Transition>
+    </Transition> -->
+    <Button
+      icon="pi pi-objects-column"
+      size="small"
+      variant="outlined"
+      class="h-8"
+      @click="toggleActionPopover"
+    />
+    <Popover ref="op">
+      <div class="flex flex-col gap-4 w-[10rem]">
+        <ul class="list-none p-0 m-0 flex flex-col gap-0.5">
+          <li v-for="(method, i) in displayMethodList" :key="i" class="flex items-center gap-2">
+            <div v-if="method.items" class="w-full">
+              <div>{{ method.label }}</div>
+              <div class="flex flex-row justify-around items-center">
+                <div v-for="item in method.items" :key="item.label">
+                  {{ item.label }}
+                </div>
+              </div>
+            </div>
+            <div v-else>11111</div>
+          </li>
+        </ul>
+      </div>
+    </Popover>
   </div>
 </template>
 
@@ -28,26 +52,48 @@
 import { onClickOutside } from '@vueuse/core'
 import { ref } from 'vue'
 
-const showActionPopover = ref(false)
-const displayMethod = ref('card')
-const settingWrapRef = ref<HTMLElement | null>(null)
+// const showActionPopover = ref(false)
+// const displayMethod = ref('card')
+// const settingWrapRef = ref<HTMLElement | null>(null)
 
 const displayMethodList = [
-  { label: '卡片视图', value: 'card' },
-  { label: '紧凑模式', value: 'compact' },
+  {
+    label: '排列方式',
+    icon: 'pi pi-users',
+    items: [
+      { label: '卡片视图', icon: 'card', command: () => {} },
+      { label: '紧凑模式', icon: 'compact', command: () => {} },
+    ],
+  },
+  {
+    label: '111',
+    icon: 'pi pi-users',
+    command: () => {},
+  },
+  {
+    label: '222',
+    icon: 'pi pi-users',
+    command: () => {},
+  },
 ]
 
-const toggleActionPopover = () => {
-  showActionPopover.value = !showActionPopover.value
-}
+// const toggleActionPopover = () => {
+//   showActionPopover.value = !showActionPopover.value
+// }
 
-const handleDisplayClick = (value: string) => {
-  displayMethod.value = value
-}
+// const handleDisplayClick = (value: string) => {
+//   displayMethod.value = value
+// }
 
-onClickOutside(settingWrapRef, () => {
-  showActionPopover.value = false
-})
+// onClickOutside(settingWrapRef, () => {
+//   showActionPopover.value = false
+// })
+
+const op = ref()
+
+const toggleActionPopover = (event: any) => {
+  op.value.toggle(event)
+}
 </script>
 
 <style lang="scss" scoped>

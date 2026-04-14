@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@primevue/auto-import-resolver": "^4.5.4",
+    "@tailwindcss/vite": "^4.2.2",
     "@tsconfig/node24": "^24.0.4",
     "@types/node": "^24.10.9",
     "@vitejs/plugin-vue": "^6.0.3",
@@ -43,6 +44,7 @@
     "postcss": "^8.5.6",
     "prettier": "3.8.1",
     "sass": "^1.97.3",
+    "tailwindcss": "^4.2.2",
     "typescript": "~5.9.3",
     "unplugin-auto-import": "^21.0.0",
     "unplugin-vue-components": "^31.1.0",
