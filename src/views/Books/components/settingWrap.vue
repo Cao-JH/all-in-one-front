@@ -33,14 +33,36 @@
         <ul class="list-none p-0 m-0 flex flex-col gap-0.5">
           <li v-for="(method, i) in displayMethodList" :key="i" class="flex items-center gap-2">
             <div v-if="method.items" class="w-full">
-              <div>{{ method.label }}</div>
-              <div class="flex flex-row justify-around items-center">
-                <div v-for="item in method.items" :key="item.label">
-                  {{ item.label }}
-                </div>
+              <div class="text-sm">{{ method.label }}</div>
+              <div class="flex flex-row justify-around items-center w-full">
+                <SelectButton
+                  v-model="displayMethod"
+                  :options="method.items"
+                  optionLabel="value"
+                  dataKey="value"
+                  aria-labelledby="custom"
+                >
+                  <template #option="slotProps">
+                    <i :class="slotProps.option.icon"></i>
+                  </template>
+                </SelectButton>
+                <!-- <div v-for="item in method.items" :key="item.label">
+                  <div v-if="item.icon" >
+                    <Button
+                      class="method-button"
+                      :class="{ active: displayFormat === item.icon }"
+                      severity="secondary"
+                      text
+                      @click="switchFormat(item.icon)"
+                    >
+                      <i :class="`pi ${item.icon}`"></i>
+                    </Button>
+                  </div>
+                  <div v-else>{{ item.label }}</div>
+                </div> -->
               </div>
             </div>
-            <div v-else>11111</div>
+            <div v-else class="text-sm">11111</div>
           </li>
         </ul>
       </div>
@@ -61,8 +83,8 @@ const displayMethodList = [
     label: '排列方式',
     icon: 'pi pi-users',
     items: [
-      { label: '卡片视图', icon: 'card', command: () => {} },
-      { label: '紧凑模式', icon: 'compact', command: () => {} },
+      { value: 'card', icon: 'pi pi-th-large', command: () => {} },
+      { value: 'list', icon: 'pi pi-bars', command: () => {} },
     ],
   },
   {
@@ -76,6 +98,8 @@ const displayMethodList = [
     command: () => {},
   },
 ]
+const method = displayMethodList[0]?.items?.find(item => item.value === 'card');
+const displayMethod = ref(method)
 
 // const toggleActionPopover = () => {
 //   showActionPopover.value = !showActionPopover.value
@@ -98,112 +122,112 @@ const toggleActionPopover = (event: any) => {
 
 <style lang="scss" scoped>
 #setting-wrap {
-  position: relative;
+  // position: relative;
 
-  .btn {
-    display: flex;
-    border: none;
-    align-items: center;
-    justify-content: center;
-    height: 2rem;
-    line-height: 2rem;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    gap: 0.25rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  // .btn {
+  //   display: flex;
+  //   border: none;
+  //   align-items: center;
+  //   justify-content: center;
+  //   height: 2rem;
+  //   line-height: 2rem;
+  //   border-radius: 0.5rem;
+  //   font-size: 1rem;
+  //   gap: 0.25rem;
+  //   cursor: pointer;
+  //   transition: all 0.3s ease;
 
-    &:hover {
-      transform: translateY(-2px);
-    }
+  //   &:hover {
+  //     transform: translateY(-2px);
+  //   }
 
-    &:active {
-      transform: translateY(0);
-    }
-  }
+  //   &:active {
+  //     transform: translateY(0);
+  //   }
+  // }
 
-  .setting {
-    width: 2rem;
-    background-color: var(--card);
-    color: var(--text-secondary);
-    border: 1.5px solid var(--text-secondary);
+  // .setting {
+  //   width: 2rem;
+  //   background-color: var(--card);
+  //   color: var(--text-secondary);
+  //   border: 1.5px solid var(--text-secondary);
 
-    &:hover,
-    &.active {
-      color: var(--text);
-      border: 1.5px solid var(--text);
-    }
-  }
+  //   &:hover,
+  //   &.active {
+  //     color: var(--text);
+  //     border: 1.5px solid var(--text);
+  //   }
+  // }
 
-  .action-popover {
-    position: absolute;
-    top: calc(100% + 0.625rem);
-    right: 0;
-    min-width: 10rem;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    border: 1px solid color-mix(in srgb, var(--text-secondary) 18%, transparent);
-    background: linear-gradient(180deg, color-mix(in srgb, var(--card) 96%, white), var(--card));
-    box-shadow:
-      0 12px 32px rgba(15, 23, 42, 0.14),
-      0 2px 8px rgba(15, 23, 42, 0.08);
-    backdrop-filter: blur(14px);
-    transform-origin: top right;
-    z-index: 10;
+  // .action-popover {
+  //   position: absolute;
+  //   top: calc(100% + 0.625rem);
+  //   right: 0;
+  //   min-width: 10rem;
+  //   padding: 0.5rem;
+  //   border-radius: 0.5rem;
+  //   border: 1px solid color-mix(in srgb, var(--text-secondary) 18%, transparent);
+  //   background: linear-gradient(180deg, color-mix(in srgb, var(--card) 96%, white), var(--card));
+  //   box-shadow:
+  //     0 12px 32px rgba(15, 23, 42, 0.14),
+  //     0 2px 8px rgba(15, 23, 42, 0.08);
+  //   backdrop-filter: blur(14px);
+  //   transform-origin: top right;
+  //   z-index: 10;
 
-    .list-item {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      font-size: 1rem;
+  //   .list-item {
+  //     display: flex;
+  //     flex-direction: column;
+  //     justify-content: center;
+  //     align-items: flex-start;
+  //     font-size: 1rem;
 
-      .popover-content {
-      }
+  //     .popover-content {
+  //     }
 
-      .display-content {
-        width: 100%;
-        height: 3rem;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
+  //     .display-content {
+  //       width: 100%;
+  //       height: 3rem;
+  //       display: flex;
+  //       flex-direction: row;
+  //       justify-content: space-around;
+  //       align-items: center;
 
-        .display-item {
-          border: none;
-          height: 2rem;
-          width: 2rem;
-          font-size: 0.5rem;
-          background-color: burlywood;
-          color: var(--text);
+  //       .display-item {
+  //         border: none;
+  //         height: 2rem;
+  //         width: 2rem;
+  //         font-size: 0.5rem;
+  //         background-color: burlywood;
+  //         color: var(--text);
 
-          &:hover,
-          &.active {
-            background-color: color-mix(in srgb, var(--card-reverse) 10%, transparent);
-            transform: translateY(-1px);
-          }
-        }
-      }
-    }
-  }
+  //         &:hover,
+  //         &.active {
+  //           background-color: color-mix(in srgb, var(--card-reverse) 10%, transparent);
+  //           transform: translateY(-1px);
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 
-  .action-popover-enter-active,
-  .action-popover-leave-active {
-    transition:
-      opacity 0.22s ease,
-      transform 0.22s ease;
-  }
+  // .action-popover-enter-active,
+  // .action-popover-leave-active {
+  //   transition:
+  //     opacity 0.22s ease,
+  //     transform 0.22s ease;
+  // }
 
-  .action-popover-enter-from,
-  .action-popover-leave-to {
-    opacity: 0;
-    transform: translateY(-8px) scale(0.96);
-  }
+  // .action-popover-enter-from,
+  // .action-popover-leave-to {
+  //   opacity: 0;
+  //   transform: translateY(-8px) scale(0.96);
+  // }
 
-  .action-popover-enter-to,
-  .action-popover-leave-from {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  // .action-popover-enter-to,
+  // .action-popover-leave-from {
+  //   opacity: 1;
+  //   transform: translateY(0) scale(1);
+  // }
 }
 </style>

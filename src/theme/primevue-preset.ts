@@ -94,7 +94,7 @@ export const primeVuePreset = definePreset(Aura, {
           popover: {
             background: '{surface.50}',
             borderColor: '{surface.200}',
-            color: '{surface.200}',
+            color: '{surface.700}',
           },
           modal: {
             background: '{surface.0}',
@@ -211,7 +211,7 @@ export const primeVuePreset = definePreset(Aura, {
           popover: {
             background: '{surface.50}',
             borderColor: '{surface.200}',
-            color: '{surface.200}',
+            color: '{surface.700}',
           },
           modal: {
             background: '{surface.0}',
