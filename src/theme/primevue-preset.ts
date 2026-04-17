@@ -273,6 +273,12 @@ export const primeVuePreset = definePreset(Aura, {
               hoverColor: '{surface.950}',
             },
           },
+          text: {
+            primary: {
+              color: '{surface.950}',
+              hoverBackground: '{surface.50}',
+            },
+          },
           outlined: {
             primary: {
               hoverBackground: '{surface.50}',
@@ -295,6 +301,12 @@ export const primeVuePreset = definePreset(Aura, {
               hoverBorderColor: '{surface.200}',
               color: '{surface.600}',
               hoverColor: '{surface.950}',
+            },
+          },
+          text: {
+            primary: {
+              color: '{surface.950}',
+              hoverBackground: '{surface.50}',
             },
           },
           outlined: {
