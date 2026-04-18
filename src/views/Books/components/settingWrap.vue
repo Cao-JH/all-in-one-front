@@ -1,26 +1,5 @@
 <template>
   <div ref="settingWrapRef" id="setting-wrap">
-    <!-- <button class="btn setting" :class="{ active: showActionPopover }" @click="toggleActionPopover">
-      <AppSvgIcon name="card" :size="20" />
-    </button>
-    <Transition name="action-popover">
-      <div v-if="showActionPopover" class="action-popover">
-        <div class="list-item">
-          <div class="popover-title"></div>
-          <div class="popover-content display-content">
-            <button
-              v-for="item in displayMethodList"
-              :key="item.value"
-              class="display-item"
-              :class="{ active: displayMethod === item.value }"
-              @click="handleDisplayClick(item.value)"
-            >
-              <span>{{ item.label }}</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </Transition> -->
     <Button
       icon="pi pi-objects-column"
       size="small"
@@ -51,7 +30,7 @@
                 </SelectButton>
               </div>
             </div>
-            <div v-else class="op-list-title">
+            <div v-else class="op-list-title cursor-pointer hover:text-primary transition-colors" @click="method.command?.()">
               {{ method.label }}
             </div>
           </li>
@@ -76,12 +55,16 @@ const displayMethodList = [
   {
     label: '111',
     icon: 'pi pi-users',
-    command: () => {},
+    command: () => {
+      console.log(111)
+    },
   },
   {
     label: '222',
     icon: 'pi pi-users',
-    command: () => {},
+    command: () => {
+      console.log(222)
+    },
   },
 ]
 const method = displayMethodList[0]?.items?.find((item) => item.value === 'card')
@@ -100,12 +83,18 @@ const toggleActionPopover = (event: any) => {
 
 .op-list-title {
   width: 100%;
+  line-height: 1rem;
   cursor: pointer;
   font-size: 0.875rem;
   border-radius: 0.25rem;
   background-color: transparent;
+  padding: 0.25rem 0.5rem;
 
   &:hover {
+    background-color: var(--p-surface-100);
+  }
+
+  &:active {
     background-color: var(--p-surface-200);
   }
 }

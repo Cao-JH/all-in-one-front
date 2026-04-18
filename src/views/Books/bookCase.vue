@@ -1,18 +1,44 @@
 <template>
-  <section id="book-content">
+  <!-- <section id="book-content">
     <article v-for="book in bookList" :key="book.id">
       <BookCard :book="book" />
     </article>
-  </section>
+  </section> -->
+
+  <div class="max-w-[1200px] mx-auto">
+    <DataView :value="bookList" :layout="viewMode">
+      <template #list>
+        <div class="flex flex-col">
+          <article v-for="(book, i) in bookList" :key="i">
+            <BookCard :book="book" :viewMode="viewMode" />
+          </article>
+        </div>
+      </template>
+
+      <template #grid>
+        <div class="grid grid-cols-12 gap-2">
+          <article
+            v-for="(book, i) in bookList"
+            :key="i"
+            class="w-full max-w-[200px] col-span-12 col-span-4 sm:col-span-3 lg:col-span-2"
+          >
+            <BookCard :book="book" :viewMode="viewMode" />
+          </article>
+        </div>
+      </template>
+    </DataView>
+  </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import type { BookItem } from '@/types/book'
 import BookCard from './components/bookCard.vue'
 
-const props = defineProps({
-  group: String,
-})
+const props = defineProps<{
+  group?: string
+  viewMode: 'grid' | 'list'
+}>()
 
 const bookList: BookItem[] = [
   {
@@ -51,6 +77,48 @@ const bookList: BookItem[] = [
     progress: '阅读进度 73%',
     palette: 'linear-gradient(160deg, #ddeee4 0%, #88b89b 54%, #365a43 100%)',
   },
+  {
+    id: 6,
+    title: '挪威的森林',
+    progress: '阅读进度 73%',
+    palette: 'linear-gradient(160deg, #ddeee4 0%, #88b89b 54%, #365a43 100%)',
+  },
+  {
+    id: 6,
+    title: '挪威的森林',
+    progress: '阅读进度 73%',
+    palette: 'linear-gradient(160deg, #ddeee4 0%, #88b89b 54%, #365a43 100%)',
+  },
+  {
+    id: 6,
+    title: '挪威的森林',
+    progress: '阅读进度 73%',
+    palette: 'linear-gradient(160deg, #ddeee4 0%, #88b89b 54%, #365a43 100%)',
+  },
+  {
+    id: 6,
+    title: '挪威的森林',
+    progress: '阅读进度 73%',
+    palette: 'linear-gradient(160deg, #ddeee4 0%, #88b89b 54%, #365a43 100%)',
+  },
+  {
+    id: 6,
+    title: '挪威的森林',
+    progress: '阅读进度 73%',
+    palette: 'linear-gradient(160deg, #ddeee4 0%, #88b89b 54%, #365a43 100%)',
+  },
+  {
+    id: 6,
+    title: '挪威的森林',
+    progress: '阅读进度 73%',
+    palette: 'linear-gradient(160deg, #ddeee4 0%, #88b89b 54%, #365a43 100%)',
+  },
+  {
+    id: 6,
+    title: '挪威的森林',
+    progress: '阅读进度 73%',
+    palette: 'linear-gradient(160deg, #ddeee4 0%, #88b89b 54%, #365a43 100%)',
+  },
 ]
 </script>
 
@@ -62,46 +130,5 @@ const bookList: BookItem[] = [
   align-content: start;
   width: 100%;
   margin: 0 auto;
-}
-
-@media (min-width: 1200px) {
-  #book-content {
-    max-width: 1160px;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 992px) and (max-width: 1199px) {
-  #book-content {
-    max-width: 960px;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  #book-content {
-    max-width: 760px;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 576px) and (max-width: 767px) {
-  #book-content {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.875rem;
-  }
-}
-
-@media (min-width: 360px) and (max-width: 575px) {
-  #book-content {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.75rem;
-  }
-}
-
-@media (max-width: 359px) {
-  #book-content {
-    grid-template-columns: minmax(0, 1fr);
-  }
 }
 </style>

@@ -59,7 +59,7 @@
     </nav>
 
     <div class="content">
-      <BookCase :group="activeGroup" />
+      <BookCase :group="activeGroup" :viewMode="'list'" />
     </div>
   </div>
 

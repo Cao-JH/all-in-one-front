@@ -1,16 +1,61 @@
 <template>
   <div id="book-card">
-    <div class="book-cover" :style="getCoverStyle(book)">
-      <img v-if="book.cover" :src="book.cover" :alt="book.title" class="cover-image" />
-      <div v-else class="cover-fallback">
-        <span class="cover-tag">BOOK</span>
-        <h3 class="fallback-title">{{ book.title }}</h3>
+    <div
+      v-if="viewMode === 'grid'"
+      class="hover:bg-(--p-surface-100) rounded-md cursor-pointer p-2"
+    >
+      <div class="book-cover aspect-2/3">
+        <img
+          v-if="book.cover"
+          :src="book.cover"
+          :alt="book.title"
+          class="w-full h-full object-cover rounded-md"
+        />
+        <div
+          v-else
+          class="no-cover w-full h-full object-cover bg-(--p-surface-200) relative rounded-md"
+        >
+          <h3
+            class="vertical-text absolute bottom-2 left-2 max-w-7/10 text-xl text-(--p-surface-800) leading-6 font-semibold text-end"
+          >
+            {{ book.title }}
+          </h3>
+        </div>
+      </div>
+      <div class="book-info flex flex-col mt-2 px-2">
+        <div class="book-title text-sm leading-5">{{ book.title }}</div>
+        <div class="book-progress text-xs leading-4 mt-1 text-(--p-text-muted-color)">
+          {{ book.progress }}
+        </div>
       </div>
     </div>
 
-    <div class="book-info">
-      <span class="book-title" :title="book.title">{{ book.title }}</span>
-      <span class="book-progress">{{ book.progress }}</span>
+    <div
+      v-else
+      class="flex flex-col xl:flex-row xl:items-start p-2 gap-4 hover:bg-(--p-surface-100) rounded-md cursor-pointer"
+    >
+      <div
+        class="w-[72px] sm:w-[88px] lg:w-[94px] aspect-2/3 bg-(--p-surface-700) mx-auto rounded-md"
+      />
+      <div
+        class="flex flex-col sm:flex-row justify-between items-center xl:items-start flex-1 gap-6"
+      >
+        <div class="flex flex-col items-center sm:items-start py-2 gap-2">
+          <div class="font-semibold leading-5 line-clamp-1">
+            {{ book.title }}
+          </div>
+          <div class="text-sm text-(--p-text-muted-color) leading-2">111</div>
+          <div class="text-sm leading-4 text-(--p-text-muted-color)">
+            <span>当前：</span>
+          </div>
+          <div class="text-sm leading-4 text-(--p-text-muted-color)">
+            <span>最新：</span>
+          </div>
+          <div class="text-xs leading-4 text-(--p-text-muted-color) mt-1">
+            {{ book.progress }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -21,6 +66,7 @@ import type { BookItem } from '@/types/book'
 
 const props = defineProps<{
   book: BookItem
+  viewMode: 'grid' | 'list'
 }>()
 
 const getCoverStyle = (book: BookItem) => {
@@ -34,128 +80,18 @@ const getCoverStyle = (book: BookItem) => {
 
 <style scoped lang="scss">
 #book-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 130px;
-  gap: 0.625rem;
-  cursor: pointer;
-  padding: 0.75rem;
-  transition:
-    background-color 0.28s ease,
-    box-shadow 0.32s cubic-bezier(0.22, 1, 0.36, 1);
-  border-radius: 0.75rem;
-  will-change: box-shadow;
-
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.04);
-    box-shadow:
-      0 12px 24px rgba(15, 23, 42, 0.08),
-      0 4px 10px rgba(15, 23, 42, 0.05);
-
-    .cover-image,
-    .cover-fallback {
-      transform: scale(1.05);
-    }
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    letter-spacing: 4px;
   }
 
-  .book-cover {
-    width: 100%;
-    aspect-ratio: 2 / 3;
-    background-color: var(--card);
-    border-radius: 0.625rem;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    flex-shrink: 0;
-    overflow: hidden;
-
-    .cover-image,
-    .cover-fallback {
-      width: 100%;
-      height: 100%;
-      transform-origin: center center;
-      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-      will-change: transform;
-    }
-
-    .cover-image {
-      object-fit: cover;
-    }
-
-    .cover-fallback {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 1rem;
-      color: rgba(255, 255, 255, 0.95);
-
-      .cover-tag {
-        align-self: flex-start;
-        padding: 0.25rem 0.55rem;
-        border: 1px solid rgba(255, 255, 255, 0.28);
-        border-radius: 999px;
-        background-color: rgba(255, 255, 255, 0.12);
-        font-size: 0.7rem;
-        letter-spacing: 0.14em;
-      }
-
-      .fallback-title {
-        max-width: 72%;
-        font-size: 1.25rem;
-        line-height: 1.3;
-        font-weight: 600;
-      }
-    }
-  }
-
-  .book-info {
-    width: 100%;
-    display: flex;
-    min-width: 0;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-
-    .book-title {
-      display: -webkit-box;
-      overflow: hidden;
-      color: var(--text);
-      font-size: 1rem;
-      font-weight: 600;
-      line-height: 1.35;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 1;
-    }
-
-    .book-progress {
-      color: var(--text-tertiary);
-      font-size: 0.75rem;
-      line-height: 1.2;
-    }
-  }
-}
-
-@media (min-width: 360px) and (max-width: 575px) {
-  .book-card {
-    gap: 0.5rem;
-    padding: 0.55rem;
-  }
-
-  .book-card .book-info {
-    .book-title {
-      font-size: 0.92rem;
-    }
-
-    .book-progress {
-      font-size: 0.72rem;
-    }
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .book-card,
-  .book-card .book-cover .cover-image,
-  .book-card .book-cover .cover-fallback {
-    transition: none;
+  .no-cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.25), transparent);
+    border-radius: 6px;
   }
 }
 </style>
