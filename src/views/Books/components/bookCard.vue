@@ -1,7 +1,7 @@
 <template>
   <div id="book-card">
     <div
-      v-if="viewMode === 'grid'"
+      v-if="props.displayMethod === 'grid'"
       class="hover:bg-(--p-surface-100) rounded-md cursor-pointer p-2"
     >
       <div class="book-cover aspect-2/3">
@@ -61,12 +61,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
 import type { BookItem } from '@/types/book'
 
 const props = defineProps<{
   book: BookItem
-  viewMode: 'grid' | 'list'
+  displayMethod: 'grid' | 'list'
 }>()
 
 const getCoverStyle = (book: BookItem) => {

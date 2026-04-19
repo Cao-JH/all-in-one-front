@@ -8,6 +8,12 @@ const router = createRouter({
       name: 'Home',
       component: () => import('@/views/Home/index.vue'),
     },
+    {
+      path: '/books/reader/:bookId',
+      name: 'BooksReader',
+      component: () => import('@/views/Books/reader/index.vue'),
+      props: true,
+    },
   ],
 })
 

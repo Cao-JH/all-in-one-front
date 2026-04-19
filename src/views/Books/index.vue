@@ -54,12 +54,12 @@
             />
           </IconField>
         </div>
-        <SettingWrap />
+        <SettingWrap v-model:displayMethod="displayMethod" />
       </div>
     </nav>
 
     <div class="content">
-      <BookCase :group="activeGroup" :viewMode="'list'" />
+      <BookCase :group="activeGroup" :displayMethod="displayMethod" />
     </div>
   </div>
 
@@ -117,6 +117,7 @@ const bookGroup = ref([
 ])
 
 const activeGroup = ref('default')
+const displayMethod = ref<'grid' | 'list'>('list')
 const currentPage = ref(0)
 
 const totalPages = computed(() => Math.ceil(bookGroup.value.length / PAGE_SIZE))
@@ -198,7 +199,7 @@ const searchKeyword = ref('')
   }
 
   .content {
-    padding: 1rem 2rem;
+    padding: 1rem 2rem 0 1rem;
     min-height: calc(100vh - 8rem);
   }
 }

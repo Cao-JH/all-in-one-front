@@ -1,43 +1,38 @@
 <template>
-  <!-- <section id="book-content">
-    <article v-for="book in bookList" :key="book.id">
-      <BookCard :book="book" />
-    </article>
-  </section> -->
-
   <div class="max-w-[1200px] mx-auto">
-    <DataView :value="bookList" :layout="viewMode">
-      <template #list>
-        <div class="flex flex-col">
-          <article v-for="(book, i) in bookList" :key="i">
-            <BookCard :book="book" :viewMode="viewMode" />
-          </article>
-        </div>
-      </template>
+    <ScrollPanel class="scroll-panel">
+      <DataView :value="bookList" :layout="props.displayMethod">
+        <template #list>
+          <div class="flex flex-col">
+            <article v-for="(book, i) in bookList" :key="i">
+              <BookCard :book="book" :displayMethod="props.displayMethod" />
+            </article>
+          </div>
+        </template>
 
-      <template #grid>
-        <div class="grid grid-cols-12 gap-2">
-          <article
-            v-for="(book, i) in bookList"
-            :key="i"
-            class="w-full max-w-[200px] col-span-12 col-span-4 sm:col-span-3 lg:col-span-2"
-          >
-            <BookCard :book="book" :viewMode="viewMode" />
-          </article>
-        </div>
-      </template>
-    </DataView>
+        <template #grid>
+          <div class="grid grid-cols-12 gap-2">
+            <article
+              v-for="(book, i) in bookList"
+              :key="i"
+              class="w-full max-w-[200px] col-span-12 col-span-4 sm:col-span-3 lg:col-span-2"
+            >
+              <BookCard :book="book" :displayMethod="props.displayMethod" />
+            </article>
+          </div>
+        </template>
+      </DataView>
+    </ScrollPanel>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import type { BookItem } from '@/types/book'
 import BookCard from './components/bookCard.vue'
 
 const props = defineProps<{
   group?: string
-  viewMode: 'grid' | 'list'
+  displayMethod: 'grid' | 'list'
 }>()
 
 const bookList: BookItem[] = [
@@ -123,12 +118,7 @@ const bookList: BookItem[] = [
 </script>
 
 <style lang="scss" scoped>
-#book-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 1rem;
-  align-content: start;
-  width: 100%;
-  margin: 0 auto;
+.scroll-panel {
+  height: calc(100vh - 9rem);
 }
 </style>

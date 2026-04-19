@@ -20,6 +20,8 @@
                   v-model="displayMethod"
                   :options="method.items"
                   optionLabel="value"
+                  optionValue="value"
+                  :allowEmpty="false"
                   dataKey="value"
                   aria-labelledby="custom"
                   fluid
@@ -41,22 +43,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+
+const props = defineProps<{
+  displayMethod: 'grid' | 'list'
+}>()
 
 const displayMethodList = [
   {
     label: '排列方式',
     icon: 'pi pi-users',
     items: [
-      { value: 'card', icon: 'pi pi-th-large', command: () => {} },
-      { value: 'list', icon: 'pi pi-bars', command: () => {} },
+      { value: 'grid', icon: 'pi pi-th-large' },
+      { value: 'list', icon: 'pi pi-bars' },
     ],
   },
   {
     label: '111',
     icon: 'pi pi-users',
     command: () => {
-      console.log(111)
+      console.log(props.displayMethod, 'props.displayMethod')
     },
   },
   {
@@ -67,8 +73,15 @@ const displayMethodList = [
     },
   },
 ]
-const method = displayMethodList[0]?.items?.find((item) => item.value === 'card')
-const displayMethod = ref(method)
+
+const emit = defineEmits<{
+  (e: 'update:displayMethod', value: 'grid' | 'list'): void
+}>()
+
+const displayMethod = computed<'grid' | 'list' | null>({
+  get: () => props.displayMethod || 'grid',
+  set: (value) => emit('update:displayMethod', value ?? 'grid'),
+})
 
 const op = ref()
 
