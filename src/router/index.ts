@@ -11,7 +11,7 @@ const router = createRouter({
     {
       path: '/books/reader/:bookId',
       name: 'BooksReader',
-      component: () => import('@/views/Books/reader/index.vue'),
+      component: () => import('@/views/Books/reader.vue'),
       props: true,
     },
   ],

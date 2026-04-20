@@ -5,7 +5,12 @@
         <template #list>
           <div class="flex flex-col">
             <article v-for="(book, i) in bookList" :key="i">
-              <BookCard :book="book" :displayMethod="props.displayMethod" />
+              <BookCard
+                :book="book"
+                :displayMethod="props.displayMethod"
+                class="cursor-pointer"
+                @click="openBookReader(book.id)"
+              />
             </article>
           </div>
         </template>
@@ -17,7 +22,12 @@
               :key="i"
               class="w-full max-w-[200px] col-span-12 col-span-4 sm:col-span-3 lg:col-span-2"
             >
-              <BookCard :book="book" :displayMethod="props.displayMethod" />
+              <BookCard
+                :book="book"
+                :displayMethod="props.displayMethod"
+                class="cursor-pointer"
+                @click="openBookReader(book.id)"
+              />
             </article>
           </div>
         </template>
@@ -28,12 +38,24 @@
 
 <script setup lang="ts">
 import type { BookItem } from '@/types/book'
+import { useRouter } from 'vue-router'
 import BookCard from './components/bookCard.vue'
 
 const props = defineProps<{
   group?: string
   displayMethod: 'grid' | 'list'
 }>()
+
+const router = useRouter()
+
+const openBookReader = (bookId: string | number) => {
+  router.push({
+    name: 'BooksReader',
+    params: {
+      bookId: String(bookId),
+    },
+  })
+}
 
 const bookList: BookItem[] = [
   {

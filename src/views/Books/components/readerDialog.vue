@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import ReaderCore from './ReaderCore.vue'
+import ReaderCore from './readerCore.vue'
 
 const props = defineProps<{
   visible: boolean
