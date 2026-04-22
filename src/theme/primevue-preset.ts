@@ -360,5 +360,23 @@ export const primeVuePreset = definePreset(Aura, {
         borderRadius: '0.25rem',
       },
     },
+    tabs: {
+      colorScheme: {
+        light: {
+          root: {},
+          tab: {
+            activeBorderColor: '{surface.900}',
+            activeColor: '{surface.900}',
+          },
+        },
+        dark: {
+          root: {},
+          tab: {
+            activeBorderColor: '{surface.900}',
+            activeColor: '{surface.900}',
+          },
+        },
+      },
+    },
   },
 })
