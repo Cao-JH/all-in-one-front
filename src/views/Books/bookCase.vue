@@ -5,29 +5,18 @@
         <template #list>
           <div class="flex flex-col">
             <article v-for="(book, i) in bookList" :key="i">
-              <BookCard
-                :book="book"
-                :displayMethod="props.displayMethod"
-                class="cursor-pointer"
-                @click="openBookReader(book.id)"
-              />
+              <BookCard :book="book" :displayMethod="props.displayMethod" class="cursor-pointer"
+                @click="openBookReader(book.id)" />
             </article>
           </div>
         </template>
 
         <template #grid>
           <div class="grid grid-cols-12 gap-2">
-            <article
-              v-for="(book, i) in bookList"
-              :key="i"
-              class="w-full max-w-[200px] col-span-12 col-span-4 sm:col-span-3 lg:col-span-2"
-            >
-              <BookCard
-                :book="book"
-                :displayMethod="props.displayMethod"
-                class="cursor-pointer"
-                @click="openBookReader(book.id)"
-              />
+            <article v-for="(book, i) in bookList" :key="i"
+              class="w-full max-w-[200px] col-span-4 sm:col-span-3 lg:col-span-2">
+              <BookCard :book="book" :displayMethod="props.displayMethod" class="cursor-pointer"
+                @click="openBookReader(book.id)" />
             </article>
           </div>
         </template>
