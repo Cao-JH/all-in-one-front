@@ -14,6 +14,11 @@ const router = createRouter({
       component: () => import('@/views/Books/reader.vue'),
       props: true,
     },
+    {
+      path: '/books/search',
+      name: 'BooksSearch',
+      component: () => import('@/views/Books/searchList.vue'),
+    },
   ],
 })
 

@@ -51,6 +51,7 @@
               size="small"
               placeholder="搜索书名、作者"
               class="h-8 w-full"
+              @keyup.enter="openSearchList"
             />
           </IconField>
         </div>
@@ -72,11 +73,12 @@
   >
     <div class="flex items-center gap-4 mb-4">
       <InputText
+        id="groupName"
         v-model="groupName"
         size="small"
-        id="groupName"
         class="flex-auto"
         autocomplete="off"
+        @keyup.enter="addNewGroup"
       />
     </div>
     <div class="flex justify-end gap-2">
@@ -86,34 +88,30 @@
         size="small"
         severity="secondary"
         @click="groupDialogVisible = false"
-      ></Button>
-      <Button size="small" type="button" label="添加" @click="addNewGroup"></Button>
+      />
+      <Button size="small" type="button" label="添加" @click="addNewGroup" />
     </div>
   </Dialog>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import SettingWrap from './components/settingWrap.vue'
 import BookCase from './bookCase.vue'
 
 const PAGE_SIZE = 8
+const router = useRouter()
 
 const bookGroup = ref([
-  { label: '未分组是啥', value: 'default' },
-  { label: '常啊我的娃看', value: '111' },
-  { label: '看完', value: '222' },
-  { label: '玄幻', value: '333' },
-  { label: '玄幻', value: '444' },
-  { label: '玄幻', value: '555' },
-  { label: '玄幻', value: '666' },
-  { label: '玄幻', value: '777' },
-  { label: '玄幻', value: '888' },
-  { label: '玄幻', value: '999' },
-  { label: '玄幻', value: '1223' },
-  { label: '玄幻', value: '121752323' },
-  { label: '玄幻', value: '121287689323' },
-  { label: '玄幻', value: '121287323' },
+  { label: '未分组', value: 'default' },
+  { label: '常读', value: 'reading' },
+  { label: '已读', value: 'done' },
+  { label: '玄幻', value: 'fantasy' },
+  { label: '科幻', value: 'sci-fi' },
+  { label: '历史', value: 'history' },
+  { label: '都市', value: 'city' },
+  { label: '收藏', value: 'favorite' },
 ])
 
 const activeGroup = ref('default')
@@ -126,29 +124,49 @@ const pagedGroups = computed(() => {
   const start = currentPage.value * PAGE_SIZE
   return bookGroup.value.slice(start, start + PAGE_SIZE)
 })
+
 const prevPage = () => {
   if (currentPage.value > 0) currentPage.value--
 }
+
 const nextPage = () => {
   if (currentPage.value < totalPages.value - 1) currentPage.value++
 }
 
-// tab栏新增group
 const groupDialogVisible = ref(false)
 const groupName = ref('')
+
 const openGroupDialog = () => {
   groupDialogVisible.value = true
 }
+
 const addNewGroup = () => {
-  const temp = { label: groupName.value, value: Date.now().toString() }
-  bookGroup.value.push(temp)
+  const label = groupName.value.trim()
+
+  if (!label) return
+
+  const group = { label, value: Date.now().toString() }
+  bookGroup.value.push(group)
+  groupName.value = ''
   groupDialogVisible.value = false
-  activeGroup.value = temp.value // tab栏选中新增的标签
-  currentPage.value = totalPages.value - 1 // tab栏同步跳转到当前页
+  activeGroup.value = group.value
+  currentPage.value = totalPages.value - 1
 }
 
-// 搜索
 const searchKeyword = ref('')
+
+const openSearchList = () => {
+  const keyword = searchKeyword.value.trim()
+
+  if (!keyword) return
+
+  router.push({
+    name: 'BooksSearch',
+    query: {
+      keyword,
+    },
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -208,6 +226,7 @@ const searchKeyword = ref('')
 .page-fade-leave-active {
   transition: opacity 0.15s ease;
 }
+
 .page-fade-enter-from,
 .page-fade-leave-to {
   opacity: 0;
