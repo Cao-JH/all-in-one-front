@@ -18,6 +18,16 @@ export const fetchBook = () => {
   // })
 }
 
+export const fetchChapterContent = (params: { bookId: string | number; chapterId: string | number; bookUrl?: string }) => {
+  return request<string>({
+    url: '/book-source-parser/content',
+    method: 'get',
+    params,
+    // 原始文本，不经过 JSON 自动解析
+    transformResponse: [(data) => data],
+  }) as unknown as string
+}
+
 
 export async function streamSearchBooks(
   params: { keyword: string },

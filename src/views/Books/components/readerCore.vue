@@ -23,9 +23,27 @@
 
     <main class="reader-core__body" ref="scrollRef">
       <div ref="bodyRef" class="reader-core__body-inner px-4 sm:px-12 w-full sm:w-[min(80%,768px)] mx-auto">
-        <div class="reader-core__empty">
-          <p>这里是阅读正文区域。</p>
-          <p>后续可以放章节内容、翻页控制、目录和字号设置。</p>
+        <!-- 加载中 -->
+        <div v-if="chapterLoading" class="reader-core__status">
+          <i class="pi pi-spin pi-spinner"></i>
+          <p>加载中...</p>
+        </div>
+
+        <!-- 加载失败 -->
+        <div v-else-if="chapterError" class="reader-core__status">
+          <i class="pi pi-exclamation-triangle"></i>
+          <p>{{ chapterError }}</p>
+        </div>
+
+        <!-- 章节内容 -->
+        <div v-else-if="paragraphs.length" class="reader-core__content">
+          <p v-for="(p, i) in paragraphs" :key="i" class="novel-paragraph">{{ p }}</p>
+        </div>
+
+        <!-- 空状态 -->
+        <div v-else class="reader-core__empty">
+          <p>暂无章节内容</p>
+          <p>请选择章节开始阅读。</p>
         </div>
       </div>
     </main>
@@ -92,9 +110,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { fetchBook } from '@/api/book';
+import { fetchChapterContent } from '@/api/book';
 import BookInfoDialog from './bookInfoDialog.vue'
 
 const router = useRouter()
@@ -111,6 +129,9 @@ const isShowBackTop = ref(false)
 const activeTab = ref('contents')
 const isReverse = ref(false)
 const dialogVisible = ref(false)
+const chapterLoading = ref(false)
+const chapterError = ref('')
+const paragraphs = ref<string[]>([])
 const currentBook = ref({
   id: 1,
   title: '雪中悍刀行',
@@ -148,6 +169,7 @@ const toggleOrder = () => {
 const goToChapter = (chapter: { id: number; title: string }) => {
   currentChapterId.value = chapter.id
   contentsVisible.value = false
+  loadChapter(chapter.id)
 }
 
 const scrollRef = ref()
@@ -156,6 +178,57 @@ const bodyRef = ref()
 const currentWidth = ref(0)
 const rightOffset = ref(16)
 const leftOffset = ref(0)
+
+/* ================= 文本解析 ================= */
+function parseNovelText(text: string): string[] {
+  // 统一换行符
+  const normalized = text.replace(/\r\n/g, '\n')
+  // 按双换行分割段落
+  const raw = normalized.split(/\n\s*\n/)
+  const result: string[] = []
+
+  for (const block of raw) {
+    const trimmed = block.trim()
+    if (!trimmed) continue
+    // 将段落内的单换行替换为空格（保持段落连贯）
+    const paragraph = trimmed.replace(/\n+/g, '')
+    if (paragraph) {
+      result.push(paragraph)
+    }
+  }
+
+  return result
+}
+
+/* ================= 加载章节 ================= */
+const loadChapter = async (chapterId: string | number) => {
+  if (!props.bookId) return
+
+  chapterLoading.value = true
+  chapterError.value = ''
+
+  try {
+    const text = await fetchChapterContent({
+      bookId: props.bookId,
+      chapterId,
+    })
+    paragraphs.value = parseNovelText(text)
+  } catch (e: unknown) {
+    chapterError.value = e instanceof Error ? e.message : '加载章节内容失败'
+    paragraphs.value = []
+  } finally {
+    chapterLoading.value = false
+    // 滚动到顶部
+    scrollRef.value?.scrollTo({ top: 0 })
+  }
+}
+
+watch(() => props.chapterId, (id) => {
+  if (id != null) {
+    currentChapterId.value = Number(id)
+    loadChapter(id)
+  }
+})
 
 /* ================= 方法 ================= */
 // 目录控制
@@ -191,11 +264,6 @@ const updatePosition = () => {
   currentWidth.value = rect.right - rect.left
 }
 
-// 获取小说内容
-const handleFetchBook = async () => {
-  const res = await fetchBook();
-}
-
 /* ================= 按钮 ================= */
 const goBack = () => router.push('/')
 
@@ -207,11 +275,16 @@ const actionButtons = ref([
 ])
 
 /* ================= 生命周期 ================= */
-onMounted(async () => {
+onMounted(() => {
   updatePosition()
   scrollRef.value?.addEventListener('scroll', handleScroll)
   window.addEventListener('resize', updatePosition)
-  await handleFetchBook()
+
+  // 如果有 chapterId prop，首次加载
+  if (props.chapterId != null) {
+    currentChapterId.value = Number(props.chapterId)
+    loadChapter(props.chapterId)
+  }
 })
 
 onUnmounted(() => {
@@ -268,7 +341,6 @@ onUnmounted(() => {
   // background: linear-gradient(180deg, var(--p-surface-100) 0%, var(--p-surface-300) 100%);
 
   .reader-core__body-inner {
-    height: 200vh;
     line-height: 1.9;
     color: var(--p-text-color);
     min-width: 0;
@@ -281,6 +353,37 @@ onUnmounted(() => {
 
     &:deep(p:last-child) {
       margin-bottom: 0;
+    }
+
+    .reader-core__content {
+      padding: 1.5rem 0;
+    }
+
+    .novel-paragraph {
+      text-indent: 2em;
+      font-size: 1.05rem;
+      line-height: 2;
+      margin-bottom: 0.5rem;
+      word-break: break-word;
+    }
+
+    .reader-core__status {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 4rem 0;
+      color: var(--p-text-muted-color);
+
+      i {
+        font-size: 1.5rem;
+      }
+
+      p {
+        margin: 0;
+        font-size: 0.95rem;
+      }
     }
 
     .reader-core__empty {
