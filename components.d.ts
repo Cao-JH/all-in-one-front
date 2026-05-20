@@ -31,6 +31,7 @@ declare module 'vue' {
     TabPanel: typeof import('primevue/tabpanel')['default']
     TabPanels: typeof import('primevue/tabpanels')['default']
     Tabs: typeof import('primevue/tabs')['default']
+    Toast: typeof import('primevue/toast')['default']
     TopBar: typeof import('./src/components/TopBar.vue')['default']
   }
   export interface GlobalDirectives {

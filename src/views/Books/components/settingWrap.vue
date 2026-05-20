@@ -39,11 +39,20 @@
         </ul>
       </div>
     </Popover>
+    <input
+      ref="fileInputRef"
+      type="file"
+      accept=".txt"
+      class="hidden"
+      @change="onFileSelected"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useToast } from 'primevue/usetoast'
+import { uploadLocalBook } from '@/api/book'
 
 const props = defineProps<{
   displayMethod: 'grid' | 'list'
@@ -59,11 +68,9 @@ const displayMethodList = [
     ],
   },
   {
-    label: '111',
-    icon: 'pi pi-users',
-    command: () => {
-      console.log(props.displayMethod, 'props.displayMethod')
-    },
+    label: '本地上传',
+    icon: 'pi pi-upload',
+    command: triggerUpload,
   },
   {
     label: '222',
@@ -84,9 +91,32 @@ const displayMethod = computed<'grid' | 'list' | null>({
 })
 
 const op = ref()
+const fileInputRef = ref<HTMLInputElement>()
+const toast = useToast()
 
 const toggleActionPopover = (event: any) => {
   op.value.toggle(event)
+}
+
+function triggerUpload() {
+  op.value.hide()
+  fileInputRef.value?.click()
+}
+
+async function onFileSelected(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+
+  try {
+    toast.add({ severity: 'info', summary: '上传中', detail: `正在上传《${file.name}》...`, life: 3000 })
+    await uploadLocalBook({ file })
+    toast.add({ severity: 'success', summary: '上传成功', detail: `《${file.name}》上传并解析完成`, life: 4000 })
+  } catch {
+    toast.add({ severity: 'error', summary: '上传失败', detail: `《${file.name}》上传失败，请重试`, life: 4000 })
+  } finally {
+    input.value = ''
+  }
 }
 </script>
 

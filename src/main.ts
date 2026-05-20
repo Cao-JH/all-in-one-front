@@ -6,6 +6,7 @@ import 'primeicons/primeicons.css'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import PrimeVue from 'primevue/config'
+import ToastService from 'primevue/toastservice'
 import Tooltip from 'primevue/tooltip'
 import { primeVuePreset } from '@/theme/primevue-preset'
 
@@ -22,7 +23,7 @@ app.use(router).use(PrimeVue, {
       darkModeSelector: '.my-app-dark',
     },
   },
-})
+}).use(ToastService)
 app.directive('tooltip', Tooltip)
 
 app.mount('#app')

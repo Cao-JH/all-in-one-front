@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import request, { service } from '@/utils/request'
 import type { BookItem } from '@/types/book'
 
 export const searchBook = (params: { keyword: string }) => {
@@ -144,4 +144,26 @@ function isBookItem(value: unknown): value is BookItem {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null
+}
+
+export interface UploadLocalBookParams {
+  file: File
+  name?: string
+  author?: string
+  charset?: string
+  bookGroupId?: string
+}
+
+export function uploadLocalBook(params: UploadLocalBookParams) {
+  const formData = new FormData()
+  formData.append('file', params.file)
+  if (params.name) formData.append('name', params.name)
+  if (params.author) formData.append('author', params.author)
+  if (params.charset) formData.append('charset', params.charset)
+  if (params.bookGroupId) formData.append('bookGroupId', params.bookGroupId)
+
+  return service.post('/book/local-record/upload', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    timeout: 120000,
+  })
 }
